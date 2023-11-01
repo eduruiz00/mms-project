@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "Recipe Generator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,9 @@
     "firebase": "^10.5.2",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
+    "jwt-decode": "^4.0.0",
     "vue": "^3.2.13",
+    "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },

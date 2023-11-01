@@ -50,7 +50,7 @@
                   type="email"
                   id="Email"
                   name="email"
-                  v-model="email"
+                  v-model="username"
                   class="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2 outline-0"
               />
             </div>
@@ -69,7 +69,6 @@
                   name="password"
                   v-model="password"
                   class="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm p-2 outline-0"
-                  :class="correctPasswordConfirmation"
               />
             </div>
 
@@ -83,7 +82,7 @@
 
               <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                 Do not have an account.
-                <a href="#" class="text-gray-700 underline" @click="$emit('to-signup')">Sign up</a>.
+                <router-link :to="{name: 'signup'}">Sign up</router-link>.
               </p>
             </div>
           </form>
@@ -95,24 +94,21 @@
 
 <script>
 export default {
-  name: "LoginTab",
+  name: "LoginView",
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      email: '',
+      username: '',
       password: '',
-      passwordConfirmation: '',
       wrongClass: 'border-red-500',
     };
   },
   methods: {
     onLogin() {
       const inputData = {
-        email: this.email,
+        username: this.username,
         password: this.password,
       };
-      this.$emit('submit', inputData);
+      this.$store.dispatch('login', inputData);
     },
   },
   computed: {},
