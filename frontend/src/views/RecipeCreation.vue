@@ -28,7 +28,7 @@ import IngredientsTab from "@/components/IngredientsTab.vue";
 import PersonalizeTab from "@/components/PersonalizeTab.vue";
 
 export default {
-  name: 'RecipeCreationView',
+  name: 'RecipeCreation',
   components: {PersonalizeTab, IngredientsTab, UploadImageTab, StepperCreation},
   data() {
     return {

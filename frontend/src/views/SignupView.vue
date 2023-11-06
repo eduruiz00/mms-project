@@ -146,7 +146,7 @@
 
               <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                 Already have an account?
-                <router-link :to="{name: 'login'}">Log in</router-link>.
+                <a href="#" class="text-gray-700 underline" @click="$emit('to-login')">Log in</a>.
               </p>
             </div>
           </form>
@@ -157,14 +157,12 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "SignupView",
   data() {
     return {
       firstName: '',
       lastName: '',
-      username: '',
       email: '',
       password: '',
       passwordConfirmation: '',
@@ -173,18 +171,14 @@ export default {
   },
   methods: {
     onSignup() {
-      axios.post("signup/", {
-        "username": this.email,
-        "first_name": this.firstName,
-        "last_name": this.lastName,
-        "email": this.email,
-        "password": this.password,
-      }).then(response => {
-        console.log(response);
-        this.$emit('to-login');
-      }).catch(error => {
-        console.log(error);
-      });
+      const inputData = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.passwordConfirmation,
+      };
+      this.$emit('submit', inputData);
     },
   },
   computed: {
