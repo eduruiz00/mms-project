@@ -37,7 +37,6 @@ def get_labels_above_threshold(file_path, classes_string, threshold=0.3):
     
     return labels_above_threshold
 
-
 def detect_ingredients(image, ingredients):
     config_path = "conf_grounding_dino/grounding_dino_swin-b_pretrain_mixeddata.py"
 

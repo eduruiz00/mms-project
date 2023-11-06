@@ -3,6 +3,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
+import warnings
+
+from .gr_dino import detect_ingredients
+
+warnings.filterwarnings("ignore")
 #
 #
 # config = {
@@ -21,11 +26,14 @@ import os
 #
 # storage = firebase.storage()
 
+CLASSES = "shrims . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . mushrooms . rice . pasta . chicken . beef . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
+
 
 @csrf_exempt  # Use this decorator to disable CSRF protection for this view@csrf_exempt  # Use this decorator to disable CSRF protection for this view
 def upload_images(request):
     if request.method == 'POST':
         images = request.FILES.getlist('images[]')
+        total_ingredients = []
 
         if images:
             # Define the folder where you want to store the images
@@ -48,7 +56,9 @@ def upload_images(request):
                     for chunk in image.chunks():
                         destination.write(chunk)
 
-            return JsonResponse({'message': 'Images uploaded successfully'})
+                ingredients = detect_ingredients(image_path, CLASSES)
+                total_ingredients += list(ingredients)
+            return JsonResponse({'ingredients': set(total_ingredients)})
         else:
             return JsonResponse({'error': 'No images provided'}, status=400)
 
