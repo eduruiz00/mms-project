@@ -55,7 +55,7 @@ def upload_images(request):
 
             ingredients = detect_ingredients(image_path, CLASSES)
             total_ingredients += list(ingredients)
-        # return Response({'ingredients': list(set(total_ingredients))})
-        return Response({'ingredients': ['chicken', 'rice', 'salt', 'pepper', 'onions', 'garlic', 'olive oil']})
+        return Response({'ingredients': list(set(total_ingredients))})
+        # return Response({'ingredients': ['chicken', 'rice', 'salt', 'pepper', 'onions', 'garlic', 'olive oil']})
     else:
         return Response({'error': 'No images provided'}, status=400)
