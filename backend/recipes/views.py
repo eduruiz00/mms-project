@@ -1,7 +1,5 @@
-from django.shortcuts import render
-# import pyrebase
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 import os
 import warnings
 
@@ -29,37 +27,35 @@ warnings.filterwarnings("ignore")
 CLASSES = "shrims . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . mushrooms . rice . pasta . chicken . beef . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
 
 
-@csrf_exempt  # Use this decorator to disable CSRF protection for this view@csrf_exempt  # Use this decorator to disable CSRF protection for this view
+@api_view(['POST'])
 def upload_images(request):
-    if request.method == 'POST':
-        images = request.FILES.getlist('images[]')
-        total_ingredients = []
+    images = request.FILES.getlist('images[]')
+    total_ingredients = []
 
-        if images:
-            # Define the folder where you want to store the images
-            upload_folder = 'data'
+    if images:
+        # Define the folder where you want to store the images
+        upload_folder = 'data'
 
-            # Create the folder if it doesn't exist
-            if not os.path.exists(upload_folder):
-                os.makedirs(upload_folder)
+        # Create the folder if it doesn't exist
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
 
-            # Iterate through the list of images and save them
-            for image in images:
-                # Generate a unique filename for each image (you can use other methods as well)
-                image_name = image.name
+        # Iterate through the list of images and save them
+        for image in images:
+            # Generate a unique filename for each image (you can use other methods as well)
+            image_name = image.name
 
-                # Construct the path to save the image
-                image_path = os.path.join(upload_folder, image_name)
+            # Construct the path to save the image
+            image_path = os.path.join(upload_folder, image_name)
 
-                # Open the file and write the image content to it
-                with open(image_path, 'wb') as destination:
-                    for chunk in image.chunks():
-                        destination.write(chunk)
+            # Open the file and write the image content to it
+            with open(image_path, 'wb') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
 
-                ingredients = detect_ingredients(image_path, CLASSES)
-                total_ingredients += list(ingredients)
-            return JsonResponse({'ingredients': set(total_ingredients)})
-        else:
-            return JsonResponse({'error': 'No images provided'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+            ingredients = detect_ingredients(image_path, CLASSES)
+            total_ingredients += list(ingredients)
+        # return Response({'ingredients': list(set(total_ingredients))})
+        return Response({'ingredients': ['chicken', 'rice', 'salt', 'pepper', 'onions', 'garlic', 'olive oil']})
+    else:
+        return Response({'error': 'No images provided'}, status=400)

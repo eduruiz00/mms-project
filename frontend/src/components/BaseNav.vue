@@ -9,6 +9,7 @@
           </router-link>
 
           <div class="flex items-center space-x-4">
+            <p>Hello {{ user }}</p>
             <router-link :to="{name: 'bookmarks'}">
               <img src="../assets/bookmark.svg" class="h-8 fill-white">
             </router-link>
@@ -25,10 +26,12 @@
 <script>
 export default {
   name: 'BaseNav',
-  props: {
-    currentUser: {
-      type: Object,
-      default: null,
+  computed: {
+    isAuth() {
+      return this.$store.getters.isAuthenticated;
+    },
+    user() {
+      return this.$store.getters.user;
     },
   },
 }
