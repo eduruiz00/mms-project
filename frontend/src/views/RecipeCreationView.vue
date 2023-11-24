@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold text-left mb-8">Recipe Creation</h1>
     <div>
       <stepper-creation @set-tab="setTab" :active-tab="currentTab"></stepper-creation>
-      <upload-image-tab v-if="currentTab === 1" @advance-tab="currentTab += 1"></upload-image-tab>
+      <upload-image-tab v-if="currentTab === 1" @advance-tab="currentTab += 1" @detected-ingredients="changeIngredients"></upload-image-tab>
       <ingredients-tab v-if="currentTab === 2"
                        :ingredients="ingredients"
                         @remove-ingredient="removeIngredient"
@@ -45,6 +45,9 @@ export default {
     },
     addIngredient(ingredient) {
       this.ingredients.push(ingredient);
+    },
+    changeIngredients(ingredients) {
+      this.ingredients = ingredients;
     }
   },
   computed: {

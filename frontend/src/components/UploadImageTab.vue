@@ -108,7 +108,7 @@ export default {
             },
           })
           .then((res) => {
-            console.log(res);
+            this.$emit("detected-ingredients", res.data);
           });
 
       this.$emit("advance-tab");
