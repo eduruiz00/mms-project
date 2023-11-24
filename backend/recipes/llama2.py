@@ -17,7 +17,7 @@ def extract_recipe_info(input_string):
             line = re.sub('"',"", line)
             ingredient, amount = line.split(':')
             quantities[ingredient.strip()] = amount
-        assistant_info['Quantities Required'] = quantities
+        assistant_info['QuantitiesRequired'] = quantities
 
     # Extract Description
     description_match = re.search(r'Description: "([^"]+)"', parts)
@@ -35,7 +35,7 @@ def extract_recipe_info(input_string):
 
     return assistant_info
 
-def generate_recipe(ingredients, num_people, cooking_time, all_ingr=True, model=True):
+def generate_recipe(ingredients, num_people, cooking_time, all_ingr, model=True):
     model_name_or_path = "TheBloke/sheep-duck-llama-2-13B-GPTQ"
     model = AutoModelForCausalLM.from_pretrained(model_name_or_path,
                                                 device_map="auto",
@@ -44,18 +44,13 @@ def generate_recipe(ingredients, num_people, cooking_time, all_ingr=True, model=
 
     tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
 
-    if all_ingr:
-        all_ingr = "You have to use all the ingredients from the list above."
-    else: 
-        all_ingr = "You have to use some of the ingredients from the list abve."
-
     sample_prompt = f"""
         Create a recipe that serves {num_people} people in under {cooking_time} minutes, using the following ingredients:
 
         Ingredients:
         {ingredients}
 
-        {all_ingr} 
+        You have to {all_ingr} the ingredients from the list above.
 
         ---
 
@@ -102,7 +97,8 @@ def generate_recipe(ingredients, num_people, cooking_time, all_ingr=True, model=
             temperature=0.7,
             top_p=0.95,
             top_k=40,
-            repetition_penalty=1.1
+            repetition_penalty=1.1,
+            device=0
         )
 
         out_pipe = pipe(prompt_template)[0]['generated_text']

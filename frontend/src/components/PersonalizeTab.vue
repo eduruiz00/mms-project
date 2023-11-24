@@ -81,7 +81,7 @@
   </div>
   <div class="flex justify-center mt-8">
     <div class="w-2/3 flex justify-end">
-      <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="getRecipe">
+      <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="getRecipe" :disabled="disabledButton">
         Generate
       </button>
     </div>
@@ -130,6 +130,11 @@ export default {
           .catch(error => {
             console.log(error)
           })
+    }
+  },
+  computed: {
+    disabledButton() {
+      return this.selectedPeople == "" || this.selectedDuration == "" || this.selectedFood == ""
     }
   }
 }

@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 #
 # storage = firebase.storage()
 
-CLASSES = "shrims . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . mushrooms . rice . pasta . chicken . beef . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
+CLASSES = "shrim . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . rice . pasta . chicken . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
 
 
 @api_view(['POST'])
@@ -72,11 +72,11 @@ def upload_images(request):
 @api_view(['POST'])
 def write_recipe(request):
     req_data = request.data
-    print(req_data["ingredients"])
-    print(req_data["people"])
-    print(req_data["duration"])
-    print(req_data["food"])
-    raw_recipe = generate_recipe(ingredients="potatoes, chicken", num_people=2, cooking_time=45, all_ingr=True, model=True)
+    ingredients = req_data["ingredients"]
+    people = req_data["people"]
+    duration = req_data["duration"]
+    food = req_data["food"]
+    raw_recipe = generate_recipe(ingredients=ingredients, num_people=people, cooking_time=duration, all_ingr=food, model=False)
     recipe_dict = extract_recipe_info(raw_recipe)
     title = recipe_dict["Title"]
     description = recipe_dict["Description"]
