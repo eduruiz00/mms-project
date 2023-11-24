@@ -2,8 +2,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import os
 import warnings
+import json
+import base64
+from PIL import Image
+import io
 
 from .gr_dino import detect_ingredients
+from .llama2 import generate_recipe, extract_recipe_info
+from .sdxl import create_image
 
 warnings.filterwarnings("ignore")
 #
@@ -55,7 +61,28 @@ def upload_images(request):
 
             ingredients = detect_ingredients(image_path, CLASSES)
             total_ingredients += list(ingredients)
-        return Response({'ingredients': list(set(total_ingredients))})
-        # return Response({'ingredients': ['chicken', 'rice', 'salt', 'pepper', 'onions', 'garlic', 'olive oil']})
+
+        detected_ingredients = list(set(total_ingredients))
+        print(detected_ingredients)
+        return Response({'ingredients': detected_ingredients})
     else:
         return Response({'error': 'No images provided'}, status=400)
+
+
+@api_view(['POST'])
+def write_recipe(request):
+    req_data = request.data
+    print(req_data["ingredients"])
+    print(req_data["people"])
+    print(req_data["duration"])
+    print(req_data["food"])
+    raw_recipe = generate_recipe(ingredients="potatoes, chicken", num_people=2, cooking_time=45, all_ingr=True, model=True)
+    recipe_dict = extract_recipe_info(raw_recipe)
+    title = recipe_dict["Title"]
+    description = recipe_dict["Description"]
+    img = create_image(title, description)
+    buffer = io.BytesIO()
+    img.save(buffer, format="JPEG")
+    img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+    return Response({"recipe": recipe_dict, "Image": img_str})

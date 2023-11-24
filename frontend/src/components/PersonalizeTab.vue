@@ -28,6 +28,13 @@
       </div>
     </div>
   </div>
+  <div class="flex justify-center mt-8">
+    <div class="w-2/3 flex justify-end">
+      <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="getRecipe">
+        Generate
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -58,13 +65,14 @@ export default {
   },
   methods: {
     getRecipe() {
+      console.log("Hola, get recipe")
       const request = {
         ingredients: this.ingredients,
         people: this.selectedPeople,
         duration: this.selectedDuration,
         food: this.selectedFood,
       }
-      axios.get('http://127.0.0.1:8000/recipes/write/', request)
+      axios.post('http://127.0.0.1:8000/recipes/write/', request)
           .then(response => {
             console.log(response)
           })

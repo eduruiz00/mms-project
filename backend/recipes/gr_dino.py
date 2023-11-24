@@ -13,7 +13,7 @@ def detect_img(inputs, model, weights=None, texts=None):
         'inputs': inputs,
         'out_dir': 'output',
         'texts': texts,
-        'pred_score_thr': 0.4,
+        'pred_score_thr': 0.3,
         'batch_size': 1,
         'show': False,
         'no_save_vis': False,

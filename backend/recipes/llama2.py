@@ -1,4 +1,39 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+import re
+
+def extract_recipe_info(input_string):
+    assistant_info = {}
+    parts = re.split("### Assistant:", input_string)[-1]
+    title = re.search(r'Title: "([^"]+)"', parts).group(1)
+    assistant_info['Title'] = title
+
+    # Extract Quantities Required
+    quantities_match = re.search(r'Quantities Required:\n(([^\n]+:[^\n]+\n)+)', parts)
+    if quantities_match:
+        quantities_section = quantities_match.group(1)
+        quantities = {}
+        quantity_lines = quantities_section.strip().split('\n')
+        for line in quantity_lines:
+            line = re.sub('"',"", line)
+            ingredient, amount = line.split(':')
+            quantities[ingredient.strip()] = amount
+        assistant_info['Quantities Required'] = quantities
+
+    # Extract Description
+    description_match = re.search(r'Description: "([^"]+)"', parts)
+    if description_match:
+        assistant_info['Description'] = description_match.group(1)
+    else:
+        description_match = re.search(r'Description: ([^"]+)', parts)
+        if description_match:
+            assistant_info['Description'] = description_match.group(1)
+
+    # Extract Instructions
+    instructions_match = re.search(r'Instructions:(.*)<\/s>', parts, re.DOTALL)
+    if instructions_match:
+        assistant_info['Instructions'] = instructions_match.group(1)
+
+    return assistant_info
 
 def generate_recipe(ingredients, num_people, cooking_time, all_ingr=True, model=True):
     model_name_or_path = "TheBloke/sheep-duck-llama-2-13B-GPTQ"
