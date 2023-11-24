@@ -22,9 +22,60 @@
     </div>
     <div class="flex justify-center w-full">
       <div class="flex justify-around gap-4 w-2/3 mt-8">
-        <base-select :options="optionsPeople" label="People" v-model="selectedPeople"></base-select>
-        <base-select :options="optionsDuration" label="Duration" v-model="selectedDuration"></base-select>
-        <base-select :options="optionsFood" label="Include" v-model="selectedFood"></base-select>
+        <div>
+          <label for="Select" class="block text-sm font-medium text-gray-900">
+            People
+          </label>
+
+          <div class="mt-1.5 w-full rounded-xl text-gray-700 p-2 border-gray-200 border shadow-md outline-0 pr-2">
+            <select
+                name="Select"
+                id="Select"
+                class="outline-0"
+                v-model="selectedPeople"
+            >
+              <option value="" disabled>Please select</option>
+              <option v-for="option in optionsPeople" :value="option" :key="option">{{ option }}</option>
+            </select>
+          </div>
+
+        </div>
+        <div>
+          <label for="Select" class="block text-sm font-medium text-gray-900">
+            Duration
+          </label>
+
+          <div class="mt-1.5 w-full rounded-xl text-gray-700 p-2 border-gray-200 border shadow-md outline-0 pr-2">
+            <select
+                name="Select"
+                id="Select"
+                class="outline-0"
+                v-model="selectedDuration"
+            >
+              <option value="" disabled>Please select</option>
+              <option v-for="option in optionsDuration" :value="option" :key="option">{{ option }}</option>
+            </select>
+          </div>
+
+        </div>
+        <div>
+          <label for="Select" class="block text-sm font-medium text-gray-900">
+            Food
+          </label>
+
+          <div class="mt-1.5 w-full rounded-xl text-gray-700 p-2 border-gray-200 border shadow-md outline-0 pr-2">
+            <select
+                name="Select"
+                id="Select"
+                class="outline-0"
+                v-model="selectedFood"
+            >
+              <option value="" disabled>Please select</option>
+              <option v-for="option in optionsFood" :value="option" :key="option">{{ option }}</option>
+            </select>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -38,15 +89,13 @@
 </template>
 
 <script>
-
-import BaseSelect from "@/components/BaseSelect.vue";
 import IngredientItem from "@/components/IngredientItem.vue";
 
 import axios from "axios";
 
 export default {
   name: 'PersonalizeTab',
-  components: {IngredientItem, BaseSelect},
+  components: {IngredientItem},
   props: {
     ingredients: {
       type: Array,

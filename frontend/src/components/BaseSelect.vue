@@ -9,6 +9,7 @@
       name="Select"
       id="Select"
       class="outline-0"
+      v-model="selected"
     >
       <option value="" disabled>Please select</option>
       <option v-for="option in options" :value="option" :key="option">{{ option }}</option>
@@ -32,10 +33,11 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      selected: ''
+    }
   },
-  methods: {}
-
+  methods: {},
 }
 </script>
 
