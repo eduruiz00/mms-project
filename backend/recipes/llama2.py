@@ -1,4 +1,4 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 import re
 
 def extract_recipe_info(input_string):
@@ -35,10 +35,10 @@ def extract_recipe_info(input_string):
 
     return assistant_info
 
-def generate_recipe(ingredients, num_people, cooking_time, all_ingr, model=True):
+def generate_recipe(ingredients, num_people, cooking_time, all_ingr):
     model_name_or_path = "TheBloke/sheep-duck-llama-2-13B-GPTQ"
     model = AutoModelForCausalLM.from_pretrained(model_name_or_path,
-                                                device_map="auto",
+                                                device_map="cuda:0",
                                                 trust_remote_code=False,
                                                 revision="main")
 
@@ -77,29 +77,9 @@ def generate_recipe(ingredients, num_people, cooking_time, all_ingr, model=True)
     ### Assistant:
     '''
 
-    if model:
-        input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
-        output = model.generate(inputs=input_ids, temperature=0.7, do_sample=True, top_p=0.95, top_k=40, max_new_tokens=1024)
+    input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+    model.to("cuda:0")
+    output = model.generate(inputs=input_ids, temperature=0.7, do_sample=True, top_p=0.95, top_k=40, max_new_tokens=1024)
 
-        out_model = tokenizer.decode(output[0])
-        return out_model
-    
-    else:
-        # Inference can also be done using transformers' pipeline
-
-        # print("*** Pipeline:")
-        pipe = pipeline(
-            "text-generation",
-            model=model,
-            tokenizer=tokenizer,
-            max_new_tokens=1024,
-            do_sample=True,
-            temperature=0.7,
-            top_p=0.95,
-            top_k=40,
-            repetition_penalty=1.1,
-            device=0
-        )
-
-        out_pipe = pipe(prompt_template)[0]['generated_text']
-        return out_pipe
+    out_model = tokenizer.decode(output[0])
+    return out_model

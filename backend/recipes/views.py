@@ -76,13 +76,19 @@ def write_recipe(request):
     people = req_data["people"]
     duration = req_data["duration"]
     food = req_data["food"]
-    raw_recipe = generate_recipe(ingredients=ingredients, num_people=people, cooking_time=duration, all_ingr=food, model=False)
+    raw_recipe = generate_recipe(ingredients=ingredients, num_people=people, cooking_time=duration, all_ingr=food)
     recipe_dict = extract_recipe_info(raw_recipe)
-    title = recipe_dict["Title"]
-    description = recipe_dict["Description"]
+
+    return Response({"recipe": recipe_dict})
+
+@api_view(['POST'])
+def generate_image(request):
+    req_data = request.data
+    title = req_data["Title"]
+    description = req_data["Description"]
     img = create_image(title, description)
     buffer = io.BytesIO()
     img.save(buffer, format="JPEG")
     img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
-    return Response({"recipe": recipe_dict, "Image": img_str})
+    return Response({"Image": img_str})
