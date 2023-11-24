@@ -1,7 +1,7 @@
 <template>
   <li class="flex items-center gap-4 border-l-2 border-emerald-500 pl-4">
     <div>
-      <h3 class="text-sm text-gray-900">{{ ingredient }}</h3>
+      <h3 class="text-sm text-gray-900">{{ ingredientCapitalized }}</h3>
     </div>
 
     <div class="flex flex-1 items-center justify-end gap-2">
@@ -47,7 +47,13 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
+  computed: {
+    ingredientCapitalized() {
+      if (!this.ingredient) return ''
+      return this.ingredient.charAt(0).toUpperCase() + this.ingredient.slice(1)
+    }
+  }
 }
 </script>
 

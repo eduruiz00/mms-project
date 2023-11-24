@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center my-8">
+  <div class="flex justify-center my-8" v-if="!loading">
     <div class="flex items-center justify-center w-2/3">
       <label
           for="dropzone-file"
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <div class="flex justify-center" v-if="selectedImages.length > 0">
+  <div class="flex justify-center" v-if="selectedImages.length > 0 && !loading">
     <div v-if="selectedImages.length > 0" class="flex w-2/3 justify-center gap-6">
       <div v-for="(file, index) in selectedImages" :key="index" class="justify-center relative">
         <img :src="file.imageData" :alt="file.name" class="w-16 h-16 flex border border-emerald-900">
@@ -42,24 +42,38 @@
     </div>
   </div>
 
-  <div class="flex justify-center mt-8">
+  <div class="flex justify-center mt-8" v-if="!loading">
     <div class="w-2/3 flex justify-end">
       <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="onUpload">
         Continue
       </button>
     </div>
   </div>
+
+  <div class="flex justify-center flex-col mt-16" v-if="loading">
+    <radar-spinner
+        :animation-duration="2000"
+        :size="60"
+        color="#10b981"
+        class="mx-auto"
+    />
+    <p>Detecting your ingredients...</p>
+  </div>
+
 </template>
 
 <script>
 import axios from "axios";
+import { RadarSpinner  } from 'epic-spinners'
 
 export default {
   name: "UploadImageTab",
+  components: { RadarSpinner },
   data() {
     return {
       selectedFiles: [], // Store selected files
       selectedImages: [], // Store selected files and their data
+      loading: false,
     };
   },
   methods: {
@@ -100,6 +114,8 @@ export default {
       axios
           .post("http://127.0.0.1:8000/recipes/upload/", fd, {
             onUploadProgress: (uploadEvent) => {
+              this.loading = true;
+
               console.log(
                   "Upload Progress: " +
                   Math.round((uploadEvent.loaded / uploadEvent.total) * 100) +
@@ -108,6 +124,7 @@ export default {
             },
           })
           .then((res) => {
+            this.loading = false;
             this.$store.commit("setIngredients", res.data.ingredients);
             this.$emit("advance-tab");
           });

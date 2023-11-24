@@ -81,21 +81,32 @@
   </div>
   <div class="flex justify-center mt-8">
     <div class="w-2/3 flex justify-end">
-      <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="getRecipe" :disabled="disabledButton">
+      <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white font-bold" @click="getRecipe"
+              :disabled="disabledButton" :class="buttonFormat">
         Generate
       </button>
     </div>
+  </div>
+  <div class="flex justify-center flex-col mt-16" v-if="loading">
+    <radar-spinner
+        :animation-duration="2000"
+        :size="60"
+        color="#10b981"
+        class="mx-auto"
+    />
+    <p>Generating your recipe...</p>
   </div>
 </template>
 
 <script>
 import IngredientItem from "@/components/IngredientItem.vue";
+import {RadarSpinner} from 'epic-spinners';
 
 import axios from "axios";
 
 export default {
   name: 'PersonalizeTab',
-  components: {IngredientItem},
+  components: {IngredientItem, RadarSpinner},
   props: {
     ingredients: {
       type: Array,
@@ -110,6 +121,7 @@ export default {
       optionsPeople: ['1', '2', '3', '4+'],
       optionsDuration: ['< 15 min', '15 - 30 min', '30 - 45 min', '45 - 60 min', '> 60 min'],
       optionsFood: ['Include all', 'Include some'],
+      loading: false,
     }
   },
   methods: {
@@ -121,12 +133,16 @@ export default {
         duration: this.selectedDuration,
         food: this.selectedFood,
       }
-      axios.post('http://127.0.0.1:8000/recipes/write/', request)
-          .then(response => {
-            console.log(response)
-            this.$store.commit('setGeneratedRecipe', response.data);
-            this.$router.push({name: 'recipe'})
-          })
+      axios.post('http://127.0.0.1:8000/recipes/write/', request, {
+        onUploadProgress: () => {
+          this.loading = true;
+        }
+      }).then(response => {
+        console.log(response)
+        this.loading = false;
+        this.$store.commit('setGeneratedRecipe', response.data);
+        this.$router.push({name: 'recipe'})
+      })
           .catch(error => {
             console.log(error)
           })
@@ -135,6 +151,13 @@ export default {
   computed: {
     disabledButton() {
       return this.selectedPeople == "" || this.selectedDuration == "" || this.selectedFood == ""
+    },
+    buttonFormat() {
+      if (this.disabledButton) {
+        return "bg-gray-400 cursor-not-allowed"
+      } else {
+        return "bg-emerald-500"
+      }
     }
   }
 }
