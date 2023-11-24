@@ -3,8 +3,8 @@
     <div class="w-1/2 flex justify-center flex-col">
       <h1 class="font-bold text-4xl text-left">{{ generatedRecipe.recipe.Title }}</h1>
       <div class="w-full flex justify-center mt-8">
-<!--        <img v-if="generatedImage" :src="'data:image/jpeg;base64,' + generatedImage" :alt="generatedRecipe.recipe.Description" class="object-cover w-full h-96 rounded-2xl">-->
-        <img v-if="generatedImage" :src="generatedImage" :alt="generatedRecipe.recipe.Description" class="object-cover w-full h-96 rounded-2xl">
+        <img v-if="generatedImage" :src="'data:image/jpeg;base64,' + generatedImage" :alt="generatedRecipe.recipe.Description" class="object-cover w-full h-96 rounded-2xl">
+<!--        <img v-if="generatedImage" :src="generatedImage" :alt="generatedRecipe.recipe.Description" class="object-cover w-full h-96 rounded-2xl">-->
         <skeleton-loader v-else class="w-full h-96 rounded-2xl"></skeleton-loader>
       </div>
       <div class="mt-8">
