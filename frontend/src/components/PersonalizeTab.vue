@@ -124,6 +124,8 @@ export default {
       axios.post('http://127.0.0.1:8000/recipes/write/', request)
           .then(response => {
             console.log(response)
+            this.$store.commit('setGeneratedRecipe', response.data);
+            this.$router.push({name: 'recipe'})
           })
           .catch(error => {
             console.log(error)

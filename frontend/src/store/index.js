@@ -8,6 +8,7 @@ export default createStore({
         accessToken: null,
         user: null,
         ingredients: ['Tomatoes', 'Onions', 'Garlic', 'Bread', 'Pepper', 'Chicken'],
+        generatedRecipe: null,
     },
     getters: {
         isAuthenticated: state => {
@@ -22,6 +23,9 @@ export default createStore({
         ingredients: state => {
             return state.ingredients;
         },
+        generatedRecipe: state => {
+            return state.generatedRecipe;
+        }
     },
     mutations: {
         setAccessToken: (state, value) => {
@@ -39,6 +43,9 @@ export default createStore({
         },
         removeIngredient: (state, ingredient) => {
             state.ingredients = state.ingredients.filter(item => item !== ingredient);
+        },
+        setGeneratedRecipe(state, value) {
+            state.generatedRecipe = value;
         }
     },
     actions: {
