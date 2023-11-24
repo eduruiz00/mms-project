@@ -33,7 +33,6 @@ export default {
   data() {
     return {
       currentTab: 1,
-      ingredients: ['Tomatoes', 'Onions', 'Garlic', 'Bread', 'Pepper', 'Chicken'],
     }
   },
   methods: {
@@ -53,6 +52,9 @@ export default {
   computed: {
     buttonName() {
       return this.currentTab === 3 ? 'Generate' : 'Continue';
+    },
+    ingredients() {
+      return this.$store.getters.ingredients;
     }
   }
 }

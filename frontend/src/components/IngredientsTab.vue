@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     removeIngredient(ingredient) {
-      this.$emit('remove-ingredient', ingredient);
+      this.$store.commit('removeIngredient', ingredient);
     },
     addIngredient(ingredient) {
       this.$emit('add-ingredient', ingredient);

@@ -108,10 +108,9 @@ export default {
             },
           })
           .then((res) => {
-            this.$emit("detected-ingredients", res.data);
+            this.$store.commit("setIngredients", res.data.ingredients);
+            this.$emit("advance-tab");
           });
-
-      this.$emit("advance-tab");
     },
   },
 };
