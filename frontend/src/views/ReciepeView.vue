@@ -4,7 +4,7 @@
       <h1 class="font-bold text-4xl text-left">{{ recipe.title }}</h1>
       <div class="w-full flex justify-center mt-8">
         <img v-if="generatedImage" :src="'data:image/jpeg;base64,' + generatedImage" :alt="recipe.description"
-             class="object-cover w-full h-96 rounded-2xl">
+            class="object-cover aspect-ratio-16/9 w-512 h-512 rounded-2xl">
         <!--        <img v-if="generatedImage" :src="generatedImage" :alt="recipe.Description" class="object-cover w-full h-96 rounded-2xl">-->
         <skeleton-loader v-else class="w-full h-96 rounded-2xl"></skeleton-loader>
       </div>

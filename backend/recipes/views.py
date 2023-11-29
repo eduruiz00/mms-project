@@ -14,7 +14,7 @@ from datetime import datetime
 from .models import Recipe
 from .gr_dino import detect_ingredients
 from .llama2 import generate_recipe, extract_recipe_info
-from .sdxl import create_image
+from .sdxl import create_image, create_image_turbo
 
 warnings.filterwarnings("ignore")
 #
@@ -113,12 +113,18 @@ def generate_image(request):
     recipe = model_to_dict(recipe_instance)
     title = recipe["title"]
     description = recipe["description"]
-    img = create_image(title, description)
-    img.save("stable_images/" + str(id_recipe) + ".jpg")
+    img = create_image_turbo(title, description)
+
+    img_folder = "stable_images"
+    # Create the folder if it doesn't exist
+    if not os.path.exists(img_folder):
+        os.makedirs(img_folder)
+
+    img.save(img_folder + str(id_recipe) + ".jpg")
     buffer = io.BytesIO()
     img.save(buffer, format="JPEG")
     img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
-    recipe_instance.image_path = "stable_images/" + str(id_recipe) + ".jpg"
+    recipe_instance.image_path = img_folder + str(id_recipe) + ".jpg"
     recipe_instance.save()
 
     return Response({"Image": img_str})
