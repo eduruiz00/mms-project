@@ -1,27 +1,30 @@
 <template>
   <article class="rounded-xl border-2 border-gray-100 bg-white">
     <div class="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
-      <a href="#" class="block shrink-0">
+      <router-link :to="'/recipe/' + recipe.id" class="block shrink-0">
+
         <img
-          alt="Speaker"
-          src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=2787&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            v-if="recipe.image"
+          :alt="recipe.description"
+          :src="'data:image/jpeg;base64,' + recipe.image"
           class="h-14 w-14 rounded-lg object-cover"
         />
-      </a>
+        <div
+            v-else
+          class="h-14 w-14 rounded-lg object-cover bg-gray-300"
+        />
+
+      </router-link>
 
       <div class="text-left">
         <h3 class="font-medium sm:text-lg">
-          <a href="#" class="hover:underline">
-            Chicken Tikka Masala
-          </a>
+          <router-link :to="'/recipe/' + recipe.id" class="hover:underline">
+            {{ recipe.title }}
+          </router-link>
         </h3>
 
         <p class="line-clamp-2 text-sm text-gray-700">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-          voluptatibus quia, quibusdam molestiae, voluptatem, quod
-          exercitationem quas voluptatum quos doloribus quae. Quisquam
-          voluptatibus quia, quibusdam molestiae, voluptatem, quod
-          exercitationem quas voluptatum quos doloribus quae.
+          {{ recipe.description }}
         </p>
 
         <div class="mt-2 sm:flex sm:items-center sm:gap-2">
@@ -84,6 +87,12 @@
 <script>
 export default {
   name: 'BookmarkCard',
+  props: {
+    recipe: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
 

@@ -141,7 +141,8 @@ export default {
         console.log(response)
         this.loading = false;
         this.$store.commit('setGeneratedRecipe', response.data);
-        this.$router.push({name: 'recipe'})
+        const id = response.data.id;
+        this.$router.push("/recipe/" + id + "/")
       })
           .catch(error => {
             console.log(error)

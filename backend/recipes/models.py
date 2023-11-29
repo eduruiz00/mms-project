@@ -10,9 +10,13 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
-    instructions = models.TextField(max_length=2000)
-    time_min = models.IntegerField(default=0)
-    servings = models.IntegerField(default=0)
+    ingredients = models.TextField(max_length=10000)
+    description = models.TextField(max_length=1000)
+    instructions = models.TextField(max_length=10000)
+    time_min = models.CharField(max_length=10)
+    servings = models.CharField(max_length=10)
+    image_path = models.CharField(max_length=600)
+    include_all = models.CharField(max_length=15)
     pub_date = models.DateTimeField("date published")
 
     def __str__(self):
