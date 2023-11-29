@@ -4,9 +4,28 @@
       <h1 class="font-bold text-4xl text-left">{{ recipe.title }}</h1>
       <div class="w-full flex justify-center mt-8">
         <img v-if="generatedImage" :src="'data:image/jpeg;base64,' + generatedImage" :alt="recipe.description"
-            class="object-cover aspect-ratio-16/9 w-512 h-512 rounded-2xl">
+             class="object-cover aspect-ratio-16/9 w-512 h-512 rounded-2xl">
         <!--        <img v-if="generatedImage" :src="generatedImage" :alt="recipe.Description" class="object-cover w-full h-96 rounded-2xl">-->
         <skeleton-loader v-else class="w-full h-96 rounded-2xl"></skeleton-loader>
+      </div>
+      <div class="mt-8 grid grid-cols-2">
+        <div class="flex flex-col items-center justify-center text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#10b981" class="w-12 h-12">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+</svg>
+
+          <p class="text-sm text-gray-500 mt-2">{{ servings }}</p>
+        </div>
+
+        <div class="flex flex-col items-center justify-center text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#10b981"
+               class="w-12 h-12">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-sm text-gray-500 mt-2">{{ recipe.time_min }}</p>
+        </div>
+
+
       </div>
       <div class="mt-8">
         <h3 class="font-bold text-lg text-emerald-500 text-left">Ingredients:</h3>
@@ -88,6 +107,14 @@ export default {
         return this.recipe.instructions.split('\n').filter(step => step.trim() !== '');
       }
       return [];
+    },
+    servings() {
+      let people = this.recipe.servings
+      if (people == 1) {
+        return "1 serving"
+      } else {
+        return people + " servings"
+      }
     }
   },
 }
