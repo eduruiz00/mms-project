@@ -68,7 +68,6 @@ def upload_images(request):
             total_ingredients += list(ingredients)
 
         detected_ingredients = list(set(total_ingredients))
-        print(detected_ingredients)
         return Response({'ingredients': detected_ingredients})
     else:
         return Response({'error': 'No images provided'}, status=400)
@@ -134,6 +133,24 @@ def generate_image(request):
 def get_recipe_with_id(request):
     id_recipe = request.data["id"]
     recipe_instance = Recipe.objects.get(id=id_recipe)
+    recipe = model_to_dict(recipe_instance)
+    recipe["ingredients"] = json.loads(recipe["ingredients"])
+    img_str = ""
+    if recipe["image_path"] != "":
+        img = Image.open(recipe["image_path"])
+        buffer = io.BytesIO()
+        img.save(buffer, format="JPEG")
+        img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+    return Response({"recipe": recipe, "image": img_str})
+
+
+@api_view(['POST'])
+def bookmark_recipe(request):
+    id_recipe = request.data["id"]
+    recipe_instance = Recipe.objects.get(id=id_recipe)
+    recipe_instance.bookmarked = not recipe_instance.bookmarked
+    recipe_instance.save()
     recipe = model_to_dict(recipe_instance)
     recipe["ingredients"] = json.loads(recipe["ingredients"])
     img_str = ""

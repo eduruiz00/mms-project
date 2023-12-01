@@ -17,6 +17,7 @@ class Recipe(models.Model):
     servings = models.CharField(max_length=10)
     image_path = models.CharField(max_length=600)
     include_all = models.CharField(max_length=15)
+    bookmarked = models.BooleanField(default=False)
     pub_date = models.DateTimeField("date published")
 
     def __str__(self):

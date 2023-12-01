@@ -8,11 +8,13 @@
         <!--        <img v-if="generatedImage" :src="generatedImage" :alt="recipe.Description" class="object-cover w-full h-96 rounded-2xl">-->
         <skeleton-loader v-else class="w-full h-96 rounded-2xl"></skeleton-loader>
       </div>
-      <div class="mt-8 grid grid-cols-2">
+      <div class="mt-8 grid grid-cols-3">
         <div class="flex flex-col items-center justify-center text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#10b981" class="w-12 h-12">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-</svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#10b981"
+               class="w-12 h-12">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+          </svg>
 
           <p class="text-sm text-gray-500 mt-2">{{ servings }}</p>
         </div>
@@ -23,6 +25,23 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
           <p class="text-sm text-gray-500 mt-2">{{ recipe.time_min }}</p>
+        </div>
+
+        <div class="flex flex-col items-center justify-center text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+               stroke="#10b981" class="w-12 h-12" v-if="!recipe.bookmarked" @click="bookmarkRecipe">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#10b981" viewBox="0 0 24 24" stroke-width="1.5"
+               stroke="#10b981" class="w-12 h-12" v-else @click="bookmarkRecipe">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+          </svg>
+
+
+          <p class="text-sm text-gray-500 mt-2" v-if="!recipe.bookmarked">Add to bookmarks</p>
+          <p class="text-sm text-gray-500 mt-2" v-else>Bookmarked!</p>
         </div>
 
 
@@ -94,11 +113,22 @@ export default {
         ingredients: {},
         instructions: '',
       },
+      bookmark: false,
     }
   },
   methods: {
     generateIngredientQuantities(ingredient, quantity) {
       return `${ingredient}: ${quantity}`;
+    },
+    bookmarkRecipe() {
+      this.bookmark = !this.bookmark;
+      axios.post('http://127.0.0.1:8000/recipes/bookmark/', {id: this.$route.params.id})
+          .then(response => {
+            this.recipe = response.data.recipe;
+          })
+          .catch(error => {
+            console.log(error)
+          })
     }
   },
   computed: {
@@ -115,7 +145,7 @@ export default {
       } else {
         return people + " servings"
       }
-    }
+    },
   },
 }
 </script>

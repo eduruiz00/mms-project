@@ -9,7 +9,9 @@
           </router-link>
 
           <div class="flex items-center space-x-4">
-            <p>Hello {{ user }}</p>
+            <router-link :to="{name: 'history'}">
+              <img src="../assets/history.svg" class="h-8 fill-white">
+            </router-link>
             <router-link :to="{name: 'bookmarks'}">
               <img src="../assets/bookmark.svg" class="h-8 fill-white">
             </router-link>
