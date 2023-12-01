@@ -76,7 +76,7 @@ def upload_images(request):
             ingredients = detect_ingredients(image_path, CLASSES)
             total_ingredients += list(ingredients)
 
-            img = convert_img(f"./output/preds/{image_name}.json")
+            img = convert_img(f"./output/vis/{image_name}")
             detected_imgs.append(img)
 
         detected_ingredients = list(set(total_ingredients))

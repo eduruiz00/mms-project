@@ -31,7 +31,9 @@
 
       </div>
       <!-- Your content goes here -->
-      <img :src="'data:image/jpeg;base64,' + selectedImage" class="w-full">
+      <div class="justify-center flex">
+        <img :src="'data:image/jpeg;base64,' + selectedImage" class="" style="height: calc(100vh - 130px); max-width: 100%;">
+      </div>
     </div>
     <div class="flex justify-center mt-4">
       <div
