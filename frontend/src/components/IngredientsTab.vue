@@ -16,7 +16,7 @@
         </button>
       </div>
       <!-- Your content goes here -->
-      <img src="https://miro.medium.com/v2/resize:fit:1400/1*08zSZOcmH0L2B46mpyBV1A.png" class="w-full">
+      <img :src="'data:image/jpeg;base64,' + imagesDetected" class="w-full">
     </div>
     <div class="flex justify-center mt-4">
       <div
@@ -69,6 +69,11 @@ export default {
     },
     addIngredient(ingredient) {
       this.$emit('add-ingredient', ingredient);
+    }
+  },
+  computed: {
+    imagesDetected() {
+      return this.$store.getters.imagesDetected[0];
     }
   }
 }

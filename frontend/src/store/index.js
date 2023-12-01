@@ -9,6 +9,7 @@ export default createStore({
         user: null,
         ingredients: ['Tomatoes', 'Onions', 'Garlic', 'Bread', 'Pepper', 'Chicken'],
         generatedRecipe: null,
+        imagesDetected: [],
     },
     getters: {
         isAuthenticated: state => {
@@ -25,7 +26,10 @@ export default createStore({
         },
         generatedRecipe: state => {
             return state.generatedRecipe;
-        }
+        },
+        imagesDetected: state => {
+            return state.imagesDetected;
+        },
     },
     mutations: {
         setAccessToken: (state, value) => {
@@ -46,7 +50,10 @@ export default createStore({
         },
         setGeneratedRecipe(state, value) {
             state.generatedRecipe = value;
-        }
+        },
+        setImagesDetected(state, value) {
+            state.imagesDetected = value;
+        },
     },
     actions: {
         login({commit}, credentials) {

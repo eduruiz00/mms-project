@@ -126,6 +126,7 @@ export default {
           .then((res) => {
             this.loading = false;
             this.$store.commit("setIngredients", res.data.ingredients);
+            this.$store.commit("setImagesDetected", res.data.images);
             this.$emit("advance-tab");
           });
     },
