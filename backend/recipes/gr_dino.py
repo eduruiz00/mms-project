@@ -6,7 +6,7 @@ def detect_img(inputs, model, weights=None, texts=None):
     init_args = {
         'model': model,
         'weights': weights,
-        'device': 'cpu',
+        'device': 'cuda:0',
         'palette': 'none',
     }
     call_args = {

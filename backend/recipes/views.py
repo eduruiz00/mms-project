@@ -38,6 +38,13 @@ warnings.filterwarnings("ignore")
 CLASSES = "shrim . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . rice . pasta . chicken . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
 
 
+def convert_img(image_path):
+    img = Image.open(image_path)
+    buffer = io.BytesIO()
+    img.save(buffer, format="JPEG")
+    img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    return img_str
+
 @api_view(['POST'])
 def upload_images(request):
     images = request.FILES.getlist('images[]')
@@ -51,11 +58,13 @@ def upload_images(request):
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
 
+        detected_imgs = []
+
         # Iterate through the list of images and save them
         for image in images:
             # Generate a unique filename for each image (you can use other methods as well)
             image_name = image.name
-
+            
             # Construct the path to save the image
             image_path = os.path.join(upload_folder, image_name)
 
@@ -67,8 +76,11 @@ def upload_images(request):
             ingredients = detect_ingredients(image_path, CLASSES)
             total_ingredients += list(ingredients)
 
+            img = convert_img(f"./output/preds/{image_name}.json")
+            detected_imgs.append(img)
+
         detected_ingredients = list(set(total_ingredients))
-        return Response({'ingredients': detected_ingredients})
+        return Response({'ingredients': detected_ingredients, 'images': detected_imgs})
     else:
         return Response({'error': 'No images provided'}, status=400)
 
