@@ -8,15 +8,30 @@
         v-if="viewDetected">
       <div class="flex justify-between text-end mb-4">
         <div class="font-bold text-xl">Detected images:</div>
-        <button @click="viewDetected = false">
+        <div class="text-s">Image {{ currentImage+1 }} of {{ imagesDetected.length }}</div>
+        <div class="flex">
+          <button @click="goLeft">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+</svg>
+          </button>
+          <button @click="goRight">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+</svg>
+          </button>
+
+          <button @click="viewDetected = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-8 h-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
+        </div>
+
       </div>
       <!-- Your content goes here -->
-      <img :src="'data:image/jpeg;base64,' + imagesDetected" class="w-full">
+      <img :src="'data:image/jpeg;base64,' + selectedImage" class="w-full">
     </div>
     <div class="flex justify-center mt-4">
       <div
@@ -61,6 +76,7 @@ export default {
   data() {
     return {
       viewDetected: false,
+      currentImage: 0,
     }
   },
   methods: {
@@ -69,11 +85,24 @@ export default {
     },
     addIngredient(ingredient) {
       this.$emit('add-ingredient', ingredient);
+    },
+    goLeft() {
+      if (this.currentImage > 0) {
+        this.currentImage -= 1;
+      }
+    },
+    goRight() {
+      if (this.currentImage < this.imagesDetected.length - 1) {
+        this.currentImage += 1;
+      }
     }
   },
   computed: {
     imagesDetected() {
-      return this.$store.getters.imagesDetected[0];
+      return this.$store.getters.imagesDetected;
+    },
+    selectedImage(){
+      return this.imagesDetected[this.currentImage];
     }
   }
 }
