@@ -37,7 +37,9 @@ export default {
   },
   methods: {
     setTab(tab) {
-      this.currentTab = tab;
+      if (tab <= this.currentTab) {
+        this.currentTab = tab;
+      }
     },
     removeIngredient(ingredient) {
       this.ingredients = this.ingredients.filter(item => item !== ingredient);
