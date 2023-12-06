@@ -35,7 +35,7 @@ warnings.filterwarnings("ignore")
 #
 # storage = firebase.storage()
 
-CLASSES = "shrim . salmon . onions . tomatoes . potatoes . carrots . peas . beans . bell peppers . cabbage . broccoli . spinach . lettuce . garlic . rice . pasta . chicken . fish . eggs . milk . butter . cheese . salt . pepper . olive oil . sugar . flour . yeast . apples . oranges . bananas . strawberries . grapes . cherries . peaches . pears . peanuts . almonds . cashews . walnuts . yogurt . bread . chocolate . tea . coffee . vinegar . chili . bacon . sausage"
+CLASSES = "macaroni . spaghetti . tomatoe sauce . eggplant . apples . avocado . bananas . cherries . grapes . lemons . oranges . pears . strawberries . beans . broccoli . carrots . lettuce . mushrooms . olives . onions . peas . pepper . potatoes . tomatoes . butter . cheese . eggs . milk . yogurt . fish . meat . bread . rice . chocolate . nuts"
 
 
 def convert_img(image_path):
@@ -92,26 +92,27 @@ def write_recipe(request):
     people = req_data["people"]
     duration = req_data["duration"]
     food = req_data["food"]
-    raw_recipe = generate_recipe(ingredients=ingredients, num_people=people, cooking_time=duration, all_ingr=food)
-    recipe_dict = extract_recipe_info(raw_recipe)
-
-    # recipe_dict = {
-    #     'Title': 'Quick and Healthy Quiche with a Fruit Twist',
-    #     'QuantitiesRequired': {'olive oil': ' 2 tablespoons', 'tomatoes': ' 1 small (diced)', 'eggs': ' 4 large', 'apples': ' 1 small (sliced)', 'broccoli': ' 1/2 cup (chopped)'},
-    #     'Description': 'A colorful and nutritious quiche, filled with a blend of vegetables, fruits, and eggs, creating a delicious meal for one.',
-    #     'Instructions': '\n\n        1. Preheat your oven to 375°F (190°C).\n        2. In a large mixing bowl, whisk together the eggs, olive oil, diced tomatoes, and chopped broccoli. Season with salt and pepper.\n        3. Roll out your pie crust and place it into a 9-inch pie dish. Pour the egg mixture into the crust.\n        4. Arrange the sliced apples on top of the egg mixture.\n        5. Bake the quiche in the preheated oven for about 30-40 minutes or until the crust is golden brown and the eggs are set.\n        6. Remove from the oven and let cool for a few minutes before serving.\n\n        Enjoy your delicious and healthy Quick and Healthy Quiche with a Fruit Twist!\n'}
-
-    recipe = Recipe()
-    recipe.title = recipe_dict["Title"]
-    recipe.ingredients = json.dumps(recipe_dict["QuantitiesRequired"])
-    recipe.description = recipe_dict["Description"]
-    recipe.instructions = recipe_dict["Instructions"]
-    recipe.time_min = duration
-    recipe.servings = people
-    recipe.image_path = ""
-    recipe.include_all = food
-    recipe.pub_date = datetime.now().strftime("%Y-%m-%d %H:%M")
-    recipe.save()
+    
+    not_finished = True
+    while not_finished:
+        try:
+            raw_recipe = generate_recipe(ingredients=ingredients, num_people=people, cooking_time=duration, all_ingr=food)
+            recipe_dict = extract_recipe_info(raw_recipe)
+            recipe = Recipe()
+            recipe.title = recipe_dict["Title"]
+            recipe.ingredients = json.dumps(recipe_dict["QuantitiesRequired"])
+            recipe.description = recipe_dict["Description"]
+            recipe.instructions = recipe_dict["Instructions"]
+            recipe.time_min = duration
+            recipe.servings = people
+            recipe.image_path = ""
+            recipe.include_all = food
+            recipe.pub_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+            recipe.save()
+            not_finished = False
+        except:
+            not_finished = True
+            print("Regenerating recipe...")
 
     return Response({"recipe": recipe_dict, "id": recipe.id})
 
@@ -190,4 +191,4 @@ def get_all_recipes(request):
             recipe_dict["image"] = img_str
         recipes_list.append(recipe_dict)
 
-    return Response({"recipes": recipes_list})
+    return Response({"recipes": recipes_list[::-1]})

@@ -19,7 +19,8 @@ def create_image(title, description):
     return image
 
 def create_image_turbo(title, description):
-    pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+    # pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+    pipe = AutoPipelineForText2Image.from_pretrained(r"C:\Users\vdesc\.cache\huggingface\hub\models--stabilityai--sdxl-turbo\snapshots\2c4b5b9e8c65b03b4cd101620ca468508e51f677", torch_dtype=torch.float16, variant="fp16")
     pipe.to("cuda")
 
     final_prompt = f"""

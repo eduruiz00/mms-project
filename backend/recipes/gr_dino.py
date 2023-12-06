@@ -13,7 +13,7 @@ def detect_img(inputs, model, weights=None, texts=None):
         'inputs': inputs,
         'out_dir': 'output',
         'texts': texts,
-        'pred_score_thr': 0.3,
+        'pred_score_thr': 0.25,
         'batch_size': 1,
         'show': False,
         'no_save_vis': False,
@@ -25,7 +25,7 @@ def detect_img(inputs, model, weights=None, texts=None):
     inferencer = DetInferencer(**init_args)
     inferencer(**call_args)
 
-def get_labels_above_threshold(file_path, classes_string, threshold=0.3):
+def get_labels_above_threshold(file_path, classes_string, threshold=0.25):
     with open(file_path, 'r') as f:
         data = json.load(f)
     
