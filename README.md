@@ -5,9 +5,9 @@ Welcome to the updated setup guide for our system. This document will guide you 
 ## Pre-requisites
 
 1. **Computer with GPUs**: Necessary for optimal performance.
-2. **Node.js**: Must be installed on your computer.
-3. **Python**: Should be installed and operational.
-4. **Conda**: Required for environment replication.
+2. **Node.js**: Must be installed on your computer. [Download Node.js](https://nodejs.org/)
+3. **Python**: Should be installed and operational. [Download Python](https://www.python.org/downloads/)
+4. **Conda**: Required for environment replication. [Download Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 
 ## Environment Setup
 
@@ -52,3 +52,7 @@ Welcome to the updated setup guide for our system. This document will guide you 
 - **History and Bookmarks**: Access your recipe history and bookmarks from the top navigation bar.
 
 Enjoy your experience with the application and happy cooking!
+
+---
+
+**Note**: This guide presumes a basic understanding of terminal usage and directory navigation. If you encounter issues, please consult the documentation for Node.js, Python, Conda, or your operating system.
