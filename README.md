@@ -1,29 +1,51 @@
 # System Setup Guide
 
-Welcome to the updated setup guide for our system. This document will guide you through the process of setting up the application on your computer, now using an `environment.yml` file to replicate our conda environment for the back-end.
+Welcome to the updated setup guide for our system. This document will guide you through the process of setting up the application on your computer.
+
+The following instructions were **run in a Windows machine with RTX-3080 GPU with 10GB of VRAM**.
 
 ## Pre-requisites
 
 1. **Computer with GPUs**: Necessary for optimal performance.
 2. **Node.js**: Must be installed on your computer. [Download Node.js](https://nodejs.org/)
-3. **Python**: Should be installed and operational. [Download Python](https://www.python.org/downloads/)
-4. **Conda**: Required for environment replication. [Download Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+3. **Python**: Should be installed and operational (tested with Python 3.11.5). [Download Python](https://www.python.org/downloads/)
+4. **Conda**: Install conda to create a new environment. Create a new environment for this project. [Download Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+5. **PyTorch**: Must be installed on your computer with CUDA support directly in the generated environment. [Download Pytorch](https://pytorch.org/get-started/locally/)
 
 ## Environment Setup
+
+### Back-End Setup
+
+1. **Navigate to Back-End Directory**: Go to the directory with the back-end code `cd backend`.
+2. **Install manually Auto-GPT for the Llama Model**: Run the following command.
+```
+pip3 install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/  # Use cu117 if on CUDA 11.7
+```
+3. **Install manually the *mmdetection* library**: Run the following command.
+```
+pip install -U openmim
+mim install mmengine
+mim install "mmcv>=2.0.0"
+mim install mmdet
+```
+4.**Replicate Environment**: To create an environment that matches our setup run `pip install -r requirements.txt` to build the dependencies for the environment.
+
 
 ### Front-End Setup
 
 1. **Navigate to Front-End Folder**: Move to the directory containing the front-end code.
 2. **Install Node.js Dependencies**: Run `npm install` to install the dependencies listed in `package.json`.
 
-### Back-End Setup
-
-1. **Navigate to Back-End Directory**: Go to the directory with the back-end code.
-2. **Replicate Conda Environment**: Use `environment.yml` to create an environment that matches our setup. Run `conda env create -f environment.yml` to build the environment.
-
 ## Preparing the Models
 
 - **Download Pre-Trained Weights**: Ensure you have the necessary pre-trained weights for the models.
+To download the weights for the Grounding Dino, run the following commands:
+```
+cd backend/recipes
+mkdir weights
+cd weights
+wget https://download.openmmlab.com/mmdetection/v3.0/grounding_dino/groundingdino_swinb_cogcoor_mmdet-55949c9c.pth
+```
 
 ## Running the Application
 
@@ -37,7 +59,7 @@ Welcome to the updated setup guide for our system. This document will guide you 
 
 1. **Open Another Terminal Window**: This is for the back-end.
 2. **Navigate to Backend Folder**: Use `cd backend` or the appropriate path.
-3. **Activate Conda Environment**: Run `conda activate [your_env_name]`, replacing `[your_env_name]` with the name of the environment created from `environment.yml`.
+3. **Activate Conda Environment**: Run `conda activate [your_env_name]`, replacing `[your_env_name]` with the name of the created environment.
 4. **Run Django API**: Execute `python manage.py runserver` to start the back-end service, which provides a URL.
 
 ## Accessing the Web Application
