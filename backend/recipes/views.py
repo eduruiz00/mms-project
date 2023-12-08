@@ -127,7 +127,7 @@ def generate_image(request):
     description = recipe["description"]
     img = create_image_turbo(title, description)
 
-    img_folder = "stable_images"
+    img_folder = "stable_images/"
     # Create the folder if it doesn't exist
     if not os.path.exists(img_folder):
         os.makedirs(img_folder)

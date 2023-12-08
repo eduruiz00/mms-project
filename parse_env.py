@@ -10,4 +10,4 @@ def parse_conda_env(yaml_file, output_file):
                     for pip_dep in dep['pip']:
                         outfile.write(pip_dep + '\n')
 
-parse_conda_env('environment.yml', 'requirements2.txt')
+parse_conda_env('environment.yml', 'requirements.txt')
