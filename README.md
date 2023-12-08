@@ -1,6 +1,3 @@
-Certainly, here's the README.md content as a markdown formatted code snippet:
-
-```markdown
 # System Setup Guide
 
 Welcome to the updated setup guide for our system. This document will guide you through the process of setting up the application on your computer, now using an `environment.yml` file to replicate our conda environment for the back-end.
@@ -55,8 +52,3 @@ Welcome to the updated setup guide for our system. This document will guide you 
 - **History and Bookmarks**: Access your recipe history and bookmarks from the top navigation bar.
 
 Enjoy your experience with the application and happy cooking!
-
----
-
-**Note**: This guide presumes a basic understanding of terminal usage and directory navigation. If you encounter issues, please consult the documentation for Node.js, Python, Conda, or your operating system.
-```
